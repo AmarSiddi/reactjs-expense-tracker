@@ -20,7 +20,7 @@ export class App extends Component {
 
       <Router>
         <Switch>
-          <Route path="/" exact={true} component={SignIn}/>
+          {/* <Route path="/" exact={true} component={SignIn}/> */}
           <Route path="/signin" exact={true} component={SignIn}/>
           <Route path="/signup" exact={true} component={SignUp}/>
           <Route path="/sigout" exact={true} component={SignOut}/>
