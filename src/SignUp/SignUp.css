@@ -1,0 +1,28 @@
+.paper {
+  margin-top: spacing(8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+:root {
+  --main-bg-color: theme.palette.secondary.main;
+}
+.avatar {
+  margin: spacing(10);
+  margin-top: spacing(12);
+  margin-left: spacing(20);
+  margin-bottom: spacing(5);
+  color: #fafafa;
+  background-color: #ff0000;
+  /* background-color: var(--main-bg-color); */
+}
+
+.form {
+  width: "100%";
+  margin-top: spacing(3);
+}
+
+.submit {
+  margin: spacing(3, 0, 2);
+}
