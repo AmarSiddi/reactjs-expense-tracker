@@ -11,7 +11,7 @@ class Category extends Component {
     const headers = {
       Authorization: "Bearer " + localStorage.getItem("store"),
     };
-    const response = await fetch("/api/categories/", {
+    await fetch("/api/categories/", {
       headers,
     })
       .then(async (response) => {

@@ -32,11 +32,11 @@ class SignUp extends Component {
     event.preventDefault();
 
     const { password, confirmPassword } = this.state;
-    
+
     if (password !== confirmPassword) {
       alert("Passwords don't match");
     } else {
-      const url = "http://localhost:5000/api/auth/signup";
+      const url = "/api/auth/signup";
       const bodyData = {
         name: this.state.firstName + "" + this.state.lastName,
         username: this.state.email,
