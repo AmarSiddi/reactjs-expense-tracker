@@ -47,9 +47,6 @@ class SignIn extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log("Username : " + this.state.usernameOrEmail);
-    console.log("Password : " + this.state.password);
-
     const url = "/api/auth/signin";
     const data1 = {
       usernameOrEmail: this.state.usernameOrEmail,
@@ -66,7 +63,6 @@ class SignIn extends Component {
         const data = await response.json();
 
         console.log("status code :", response.status);
-        console.log("token :", data.accessToken);
 
         if (
           response.status &&
