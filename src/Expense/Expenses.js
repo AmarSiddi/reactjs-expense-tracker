@@ -10,19 +10,18 @@ import {
   Label,
   Form,
   FormGroup,
-  Table
+  Table,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 
 class Expenses extends Component {
-  
   emptyItem = {
     description: "",
     expensedate: new Date(),
     id: 104,
     location: "",
-    category: { id: 1, name: "Travel" }
+    category: { id: 1, name: "Travel" },
   };
 
   constructor(props) {
@@ -33,7 +32,7 @@ class Expenses extends Component {
       date: new Date(),
       Categories: [],
       Expenses: [],
-      item: this.emptyItem
+      item: this.emptyItem,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -46,14 +45,14 @@ class Expenses extends Component {
 
     const item = this.state.item;
 
-    await fetch("http://localhost:5000/api/expenses", {
+    await fetch("/api/expenses", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("store")
+        Authorization: "Bearer " + localStorage.getItem("store"),
       },
-      body: JSON.stringify(item)
+      body: JSON.stringify(item),
     });
 
     //console.log(this.state);
@@ -77,26 +76,32 @@ class Expenses extends Component {
   }
 
   async remove(id) {
-    await fetch("http://localhost:5000/api/expenses/$(id)", {
+    await fetch("/api/expenses/$(id)", {
       method: "DELETE",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("store")
-      }
+        Authorization: "Bearer " + localStorage.getItem("store"),
+      },
     }).then(() => {
-      let updatedExpenses = [...this.state.Expenses].filter(i => i.id !== id);
+      let updatedExpenses = [...this.state.Expenses].filter((i) => i.id !== id);
       this.setState({ Expenses: updatedExpenses });
     });
   }
 
   async componentDidMount() {
-    const headers = { "Authorization": "Bearer "+localStorage.getItem('store')};
-    const response = await fetch("http://localhost:5000/api/categories",{headers});
+    const headers = {
+      Authorization: "Bearer " + localStorage.getItem("store"),
+    };
+    const response = await fetch("/api/categories", {
+      headers,
+    });
     const body = await response.json();
     this.setState({ Categories: body, isLoading: false });
 
-    const responseExp = await fetch("http://localhost:5000/api/expenses",{headers});
+    const responseExp = await fetch("/api/expenses", {
+      headers,
+    });
     const bodyExp = await responseExp.json();
     this.setState({ Expenses: bodyExp, isLoading: false });
   }
@@ -108,13 +113,13 @@ class Expenses extends Component {
 
     if (isLoading) return <div>Loading....</div>;
 
-    let optionList = Categories.map(category => (
+    let optionList = Categories.map((category) => (
       <option value={category.id} key={category.id}>
         {category.name}
       </option>
     ));
 
-    let rows = Expenses.map(expense => (
+    let rows = Expenses.map((expense) => (
       <tr key={expense.id}>
         <td>{expense.description}</td>
         <td>{expense.location}</td>

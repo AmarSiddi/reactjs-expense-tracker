@@ -8,8 +8,6 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-//import "./SignIn.css";
-//import Auth from "../Auth/Auth";
 
 class SignIn extends Component {
   constructor() {
@@ -19,7 +17,7 @@ class SignIn extends Component {
       password: "",
       login: false,
       store: null,
-      errorMessage: ""
+      errorMessage: "",
     };
   }
 
@@ -39,32 +37,32 @@ class SignIn extends Component {
     }
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     event.preventDefault();
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
 
     console.log("Username : " + this.state.usernameOrEmail);
     console.log("Password : " + this.state.password);
 
-    const url = "http://localhost:5000/api/auth/signin";
+    const url = "/api/auth/signin";
     const data1 = {
       usernameOrEmail: this.state.usernameOrEmail,
-      password: this.state.password
+      password: this.state.password,
     };
 
     fetch(url, {
       method: "POST",
       mode: "cors",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data1) // data can be `string` or {object}!
+      body: JSON.stringify(data1), // data can be `string` or {object}!
     })
-      .then(async response => {
+      .then(async (response) => {
         const data = await response.json();
 
         console.log("status code :", response.status);
@@ -73,27 +71,26 @@ class SignIn extends Component {
         if (
           response.status &&
           data.accessToken &&
-          data.accessToken != null && response.status === 200
+          data.accessToken != null &&
+          response.status === 200
         ) {
           console.log("SUCCESS!!");
 
-          localStorage.setItem('login', true);
-          localStorage.setItem('store', data.accessToken);
+          localStorage.setItem("login", true);
+          localStorage.setItem("store", data.accessToken);
 
           this.props.history.push("/home");
-          
         } else {
           if (response.status === "401") {
             this.setState({
-              errorMessage:
-                "Please enter valid username or password."
+              errorMessage: "Please enter valid username or password.",
             });
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({
-          errorMessage: "Something went wrong, Please try again!"
+          errorMessage: "Something went wrong, Please try again!",
         });
         //console.error('There was an error!', error);
       });
@@ -137,10 +134,7 @@ class SignIn extends Component {
               autoComplete="current-password"
               onChange={this.handleChange}
             />
-            {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
+
             <Button
               type="submit"
               fullWidth
@@ -151,11 +145,6 @@ class SignIn extends Component {
               Sign In
             </Button>
             <Grid container>
-              {/* <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid> */}
               <Grid item container justify="flex-end">
                 <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}

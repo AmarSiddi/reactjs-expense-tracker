@@ -1,10 +1,13 @@
 import React, { Component } from "react";
-//import Auth from "../Utils/Auth";
 
 class SignOut extends Component {
   state = {};
   render() {
-    return <div>{localStorage.clear()},{this.props.history.push("/")}</div>;
+    return (
+      <div>
+        {localStorage.clear()},{this.props.history.push("/")}
+      </div>
+    );
   }
 }
 

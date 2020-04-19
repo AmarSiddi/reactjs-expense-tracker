@@ -15,7 +15,7 @@
   margin-left: spacing(20);
   margin-bottom: spacing(5);
   color: #fafafa;
-    background-color: #ff0000;
+  background-color: #ff0000;
   /* background-color: var(--main-bg-color); */
 }
 
@@ -27,6 +27,6 @@
 .submit {
   margin: spacing(3, 0, 2);
 }
-.errorMessage{
-  color:red;
+.errorMessage {
+  color: red;
 }

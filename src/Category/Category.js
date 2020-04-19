@@ -1,52 +1,45 @@
-
-import React, { Component } from 'react';
-import AppNav from '../Utils/AppNav';
+import React, { Component } from "react";
+import AppNav from "../Utils/AppNav";
 
 class Category extends Component {
-    state = {  
+  state = {
+    isLoading: true,
+    Categories: [],
+  };
 
-        isLoading : true,
-        Categories : []
-
-    }
-
-    async componentDidMount(){
-
-        const headers = { "Authorization": "Bearer "+localStorage.getItem('store')};
-        const response = await fetch('http://localhost:5000/api/categories/',{headers})
-        .then(async response => {
+  async componentDidMount() {
+    const headers = {
+      Authorization: "Bearer " + localStorage.getItem("store"),
+    };
+    const response = await fetch("/api/categories/", {
+      headers,
+    })
+      .then(async (response) => {
         const data = await response.json();
         console.log(data);
-        this.setState({Categories :data, isLoading: false});
+        this.setState({ Categories: data, isLoading: false });
         console.log("Category!!!!!");
-        }).catch(error => {
-            this.setState({ errorMessage: error });
-            console.error('There was an error!', error);
-        });
+      })
+      .catch((error) => {
+        this.setState({ errorMessage: error });
+        console.error("There was an error!", error);
+      });
+  }
 
-    }
+  render() {
+    const { Categories, isLoading } = this.state;
+    if (isLoading) return <div>Loading...</div>;
 
-    render() { 
-        const {Categories, isLoading} = this.state;
-        if(isLoading)
-        return(<div>Loading...</div>);
-
-        return ( 
-            <div>
-                <AppNav/>
-                <h4>Categories</h4>
-                {
-                    Categories.map( category =>
-                        <div id={category.id}>
-                        {category.name}
-                        </div>
-                    )
-                }
-            </div>
-
-         );
-        
-    }
+    return (
+      <div>
+        <AppNav />
+        <h4>Categories</h4>
+        {Categories.map((category) => (
+          <div id={category.id}>{category.name}</div>
+        ))}
+      </div>
+    );
+  }
 }
- 
+
 export default Category;
