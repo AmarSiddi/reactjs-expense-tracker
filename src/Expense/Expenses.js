@@ -45,7 +45,7 @@ class Expenses extends Component {
 
     const item = this.state.item;
 
-    await fetch("/api/expenses", {
+    await fetch(process.env.REACT_APP_HOST_URL+"/api/expenses", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -76,7 +76,7 @@ class Expenses extends Component {
   }
 
   async remove(id) {
-    await fetch("/api/expenses/$(id)", {
+    await fetch(process.env.REACT_APP_HOST_URL+"/api/expenses/$(id)", {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -93,13 +93,13 @@ class Expenses extends Component {
     const headers = {
       Authorization: "Bearer " + localStorage.getItem("store"),
     };
-    const response = await fetch("/api/categories", {
+    const response = await fetch(process.env.REACT_APP_HOST_URL+"/api/categories", {
       headers,
     });
     const body = await response.json();
     this.setState({ Categories: body, isLoading: false });
 
-    const responseExp = await fetch("/api/expenses", {
+    const responseExp = await fetch(process.env.REACT_APP_HOST_URL+"/api/expenses", {
       headers,
     });
     const bodyExp = await responseExp.json();

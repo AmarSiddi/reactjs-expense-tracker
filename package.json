@@ -12,6 +12,7 @@
     "acorn": "^7.1.1",
     "acron": "^1.0.5",
     "bootstrap": "^4.4.1",
+    "env-cmd": "^10.1.0",
     "http-proxy-middleware": "^1.0.3",
     "minimist": "^1.2.5",
     "moment": "^2.24.0",

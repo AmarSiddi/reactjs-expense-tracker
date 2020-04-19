@@ -36,7 +36,7 @@ class SignUp extends Component {
     if (password !== confirmPassword) {
       alert("Passwords don't match");
     } else {
-      const url = "/api/auth/signup";
+      const url = process.env.REACT_APP_HOST_URL+"/api/auth/signup";
       const bodyData = {
         name: this.state.firstName + "" + this.state.lastName,
         username: this.state.email,

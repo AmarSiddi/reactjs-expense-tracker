@@ -20,7 +20,6 @@ class SignIn extends Component {
       errorMessage: "",
     };
   }
-
   componentDidMount() {
     this.storeCollector();
   }
@@ -43,11 +42,10 @@ class SignIn extends Component {
       [event.target.name]: event.target.value,
     });
   };
-
+  
   handleSubmit = (event) => {
     event.preventDefault();
-
-    const url = "/api/auth/signin";
+    const url = process.env.REACT_APP_HOST_URL+"/api/auth/signin";
     const data1 = {
       usernameOrEmail: this.state.usernameOrEmail,
       password: this.state.password,
