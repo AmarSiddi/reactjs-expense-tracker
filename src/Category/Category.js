@@ -35,7 +35,8 @@ class Category extends Component {
         <AppNav />
         <h4>Categories</h4>
         {Categories.map((category) => (
-          <div id={category.id}>{category.name}</div>
+          <div id={category.id}>
+            {category.name}</div>
         ))}
       </div>
     );

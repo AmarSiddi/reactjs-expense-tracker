@@ -18,10 +18,9 @@ import Moment from "react-moment";
 class Expenses extends Component {
   emptyItem = {
     description: "",
-    expensedate: new Date(),
-    id: 104,
+    expenseDate: new Date(),
     location: "",
-    category: { id: 1, name: "Travel" },
+    category: { id: '1',name:'test1'},
   };
 
   constructor(props) {
@@ -30,7 +29,6 @@ class Expenses extends Component {
     this.state = {
       isLoading: true,
       date: new Date(),
-      Categories: [],
       Expenses: [],
       item: this.emptyItem,
     };
@@ -38,14 +36,16 @@ class Expenses extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleCatChange = this.handleCatChange.bind(this);
   }
 
   async handleSubmit(event) {
     event.preventDefault();
 
     const item = this.state.item;
+    console.log(item);
 
-    await fetch(process.env.REACT_APP_HOST_URL+"/api/expenses", {
+    await fetch(process.env.REACT_APP_HOST_URL + "/api/expenses", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -54,8 +54,7 @@ class Expenses extends Component {
       },
       body: JSON.stringify(item),
     });
-
-    //console.log(this.state);
+    this.props.history.push("/home");
     this.props.history.push("/expenses");
   }
 
@@ -66,7 +65,25 @@ class Expenses extends Component {
     let item = { ...this.state.item };
     item[name] = value;
     this.setState({ item });
+
     console.log(item);
+  }
+
+  handleCatChange(category) {
+
+    const target = category.target;
+    const value = target.value;
+
+    let idx = category.target.selectedIndex;
+    let dataset = category.target.options[idx].text;
+
+    var category = {...this.state.category}
+    category.id = value;
+    category.name = dataset;
+
+    let item = { ...this.state.item};
+    item.category = category
+    this.setState({ item });
   }
 
   handleDateChange(date) {
@@ -76,7 +93,7 @@ class Expenses extends Component {
   }
 
   async remove(id) {
-    await fetch(process.env.REACT_APP_HOST_URL+"/api/expenses/$(id)", {
+    await fetch(process.env.REACT_APP_HOST_URL + "/api/expenses/" + id, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -93,15 +110,21 @@ class Expenses extends Component {
     const headers = {
       Authorization: "Bearer " + localStorage.getItem("store"),
     };
-    const response = await fetch(process.env.REACT_APP_HOST_URL+"/api/categories", {
-      headers,
-    });
+    const response = await fetch(
+      process.env.REACT_APP_HOST_URL + "/api/categories",
+      {
+        headers,
+      }
+    );
     const body = await response.json();
     this.setState({ Categories: body, isLoading: false });
 
-    const responseExp = await fetch(process.env.REACT_APP_HOST_URL+"/api/expenses", {
-      headers,
-    });
+    const responseExp = await fetch(
+      process.env.REACT_APP_HOST_URL + "/api/expenses",
+      {
+        headers,
+      }
+    );
     const bodyExp = await responseExp.json();
     this.setState({ Expenses: bodyExp, isLoading: false });
   }
@@ -114,7 +137,11 @@ class Expenses extends Component {
     if (isLoading) return <div>Loading....</div>;
 
     let optionList = Categories.map((category) => (
-      <option value={category.id} key={category.id}>
+      <option
+        name={category.id}
+        value={category.id}
+        key={category.id}
+      >
         {category.name}
       </option>
     ));
@@ -126,7 +153,7 @@ class Expenses extends Component {
         <td>
           <Moment date={expense.expenseDate} format="YYYY/MM/DD" />
         </td>
-        <td>{expense.category.name}</td>
+        <td>{expense.categoryName}</td>
         <td>
           <Button
             size="sm"
@@ -144,30 +171,40 @@ class Expenses extends Component {
         <AppNav />
         <Container>
           {title}
-
+          {this.cat}
           <Form onSubmit={this.handleSubmit}>
-            <FormGroup>
-              <Label for="description">Title</Label>
-              <Input
-                type="description"
-                name="description"
-                id="description"
-                onChange={this.handleChange}
-              />
-            </FormGroup>
-
-            <FormGroup>
-              <Label for="category">Category</Label>
-              <select onChange={this.handleChange}>{optionList}</select>
-            </FormGroup>
-
-            <FormGroup>
-              <Label for="expenseDate">Date</Label>
-              <DatePicker
-                selected={this.state.item.expenseDate}
-                onChange={this.handleDateChange}
-              />
-            </FormGroup>
+            <div className="row">
+              <FormGroup className="col-md-4 mb-3">
+                <Label for="description">Title</Label>
+                <Input
+                  type="description"
+                  name="description"
+                  id="description"
+                  onChange={this.handleChange}
+                />
+              </FormGroup>
+            </div>
+            <div className="row">
+              <FormGroup className="col-md-4 mb-3">
+                <Label for="category">Category</Label>
+                <div>
+                  <select className="col-md-6" category={this.state.category} onChange={this.handleCatChange}>
+                    {optionList}
+                  </select>
+                </div>
+              </FormGroup>
+            </div>
+            <div className="row">
+              <FormGroup className="col-md-4 mb-3">
+                <Label for="expenseDate">Date</Label>
+                <div>
+                  <DatePicker
+                    selected={this.state.item.expenseDate}
+                    onChange={this.handleDateChange}
+                  />
+                </div>
+              </FormGroup>
+            </div>
 
             <div className="row">
               <FormGroup className="col-md-4 mb-3">

@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Recaptcha from "react-recaptcha";
 
 class SignIn extends Component {
   constructor() {
@@ -18,8 +19,36 @@ class SignIn extends Component {
       login: false,
       store: null,
       errorMessage: "",
+      recaptchaResponse: "",
+    };
+
+    this.recaptchaLoaded = this.recaptchaLoaded.bind(this);
+    this.verifyCallback = this.verifyCallback.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.state = {
+      isVerified: false,
     };
   }
+
+  recaptchaLoaded = () => {
+    console.log("capcha successfully loaded");
+  };
+
+  verifyCallback = (response) => {
+    if (response) {
+      this.setState({
+        isVerified: true,
+      });
+    }
+
+    this.setState({
+      recaptchaResponse: response,
+    });
+
+    console.log(response);
+  };
+
   componentDidMount() {
     this.storeCollector();
   }
@@ -42,13 +71,17 @@ class SignIn extends Component {
       [event.target.name]: event.target.value,
     });
   };
-  
+
   handleSubmit = (event) => {
     event.preventDefault();
-    const url = process.env.REACT_APP_HOST_URL+"/api/auth/signin";
+
+    const url =
+      process.env.REACT_APP_HOST_URL +
+      "/api/auth/signin?g-recaptcha-response="+this.state.recaptchaResponse
     const data1 = {
       usernameOrEmail: this.state.usernameOrEmail,
       password: this.state.password,
+      //"g-recaptcha-response:" : this.state.recaptchaResponse
     };
 
     fetch(url, {
@@ -88,6 +121,10 @@ class SignIn extends Component {
         });
         //console.error('There was an error!', error);
       });
+
+    // }else{
+    //   alert("WHAATTTTTTTTT")
+    // }
   };
 
   render() {
@@ -129,12 +166,24 @@ class SignIn extends Component {
               onChange={this.handleChange}
             />
 
+            <Recaptcha
+              sitekey="6LckUuwUAAAAALqSxgaycih2bYEJxrLsU8IYFTJy"
+              render="explicit"
+              onloadCallback={() => console.log("loaded")}
+              verifyCallback={this.verifyCallback}
+            />
+
+            {/* <div className="g-recaptcha" 
+              data-sitekey="6LckUuwUAAAAALqSxgaycih2bYEJxrLsU8IYFTJy"></div> */}
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className="submit"
+              //disabled={!this.state.isVerified}
+              onClick={this.handleSubscribe}
             >
               Sign In
             </Button>
