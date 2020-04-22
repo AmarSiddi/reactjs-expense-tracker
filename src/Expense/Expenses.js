@@ -77,7 +77,7 @@ class Expenses extends Component {
     let idx = category.target.selectedIndex;
     let dataset = category.target.options[idx].text;
 
-    var category = {...this.state.category}
+    category = {...this.state.category}
     category.id = value;
     category.name = dataset;
 

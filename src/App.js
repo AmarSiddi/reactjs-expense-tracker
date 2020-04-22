@@ -8,6 +8,7 @@ import ProtectedRoute from "./Utils/ProtectedRoute";
 import Category from "./Category/Category";
 import Expenses from "./Expense/Expenses";
 import SignOut from "./Dashboard/SignOut"
+//import JoinForm from './SignUp/JoinForm';
 
 
 export class App extends Component {
@@ -21,6 +22,7 @@ export class App extends Component {
           <Route path="/" exact={true} component={SignIn}/>
           <Route path="/signin" exact={true} component={SignIn}/>
           <Route path="/signup" exact={true} component={SignUp}/>
+          {/* <Route path="/JoinForm" exact={true} component={JoinForm}/> */}
           <Route path="/sigout" exact={true} component={SignOut}/>
 
           <Route path="/expenses" exact={true} component={Expenses}/>

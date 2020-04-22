@@ -12,8 +12,8 @@ import "./SignUp.css";
 
 class SignUp extends Component {
   state = {
-    firstName: "",
-    lastName: "",
+    userName: "",
+    //lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -38,8 +38,9 @@ class SignUp extends Component {
     } else {
       const url = process.env.REACT_APP_HOST_URL+"/api/auth/signup";
       const bodyData = {
-        name: this.state.firstName + "" + this.state.lastName,
-        username: this.state.email,
+        //name: this.state.firstName + "" + this.state.lastName,
+        name: this.state.userName,
+        username: this.state.userName,
         email: this.state.email,
         password: this.state.password,
       };
@@ -106,20 +107,20 @@ class SignUp extends Component {
           </Typography>
           <form className="form" noValidate onSubmit={this.handleSubmit}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
-                  autoComplete="fname"
-                  name="firstName"
+                  autoComplete="Uname"
+                  name="UserName"
                   variant="outlined"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="userName"
+                  label="User Name"
                   autoFocus
                   onChange={this.handleChange}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <TextField
                   variant="outlined"
                   required
@@ -130,7 +131,7 @@ class SignUp extends Component {
                   autoComplete="lname"
                   onChange={this.handleChange}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
