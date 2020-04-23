@@ -9,10 +9,16 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Recaptcha from "react-recaptcha";
+import { withCookies, Cookies } from 'react-cookie';
+import { instanceOf } from 'prop-types';
 
 class SignIn extends Component {
-  constructor() {
-    super();
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
+  constructor(props) {
+    super(props);
+    const {cookies} = props;
     this.state = {
       usernameOrEmail: "",
       password: "",
@@ -20,6 +26,7 @@ class SignIn extends Component {
       store: null,
       errorMessage: "",
       recaptchaResponse: "",
+      csrfToken : cookies.get('XSRF-TOKEN')
     };
 
     this.recaptchaLoaded = this.recaptchaLoaded.bind(this);
@@ -77,7 +84,10 @@ class SignIn extends Component {
 
     const url =
       process.env.REACT_APP_HOST_URL +
-      "/api/auth/signin?g-recaptcha-response="+this.state.recaptchaResponse
+      "/api/auth/signin?g-recaptcha-response=" +
+      this.state.recaptchaResponse;
+    // const url ="https://localhost:8080/api/auth/signin?g-recaptcha-response=" +
+    //   this.state.recaptchaResponse;
     const data1 = {
       usernameOrEmail: this.state.usernameOrEmail,
       password: this.state.password,
@@ -87,9 +97,14 @@ class SignIn extends Component {
     fetch(url, {
       method: "POST",
       mode: "cors",
-      headers: { "Content-Type": "application/json" },
+      credentials: 'include',
+      headers: { 
+        "Content-Type": "application/json",
+        'X-XSRF-TOKEN': this.state.csrfToken 
+    },
       body: JSON.stringify(data1), // data can be `string` or {object}!
-    })
+    },
+    )
       .then(async (response) => {
         const data = await response.json();
 
@@ -202,4 +217,4 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn;
+export default withCookies(SignIn);

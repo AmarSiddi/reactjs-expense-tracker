@@ -46,9 +46,10 @@ class SignUp extends Component {
       nameError = "invalid username";
     }
 
-    if (!(this.state.email) ) {
+    if(!this.state.email){
       emailError = "email can't be blank";
-    }else if(!(this.state.email.includes("@"))){
+    }
+    else if (!(this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) ) {
       emailError = "invalid email";
     }
 
@@ -83,7 +84,7 @@ class SignUp extends Component {
 
     const isValid = this.validate();
     if (isValid) {
-      console.log(this.state);
+      //console.log(this.state);
      
 
     if (password !== confirmPassword) {
@@ -234,6 +235,7 @@ class SignUp extends Component {
               </Grid>
               <div style={{fontSize:12, color:"red"}}>{this.state.confirmPasswordError}</div>
             </Grid>
+            <div></div>
             <Button
               type="submit"
               fullWidth

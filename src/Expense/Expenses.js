@@ -20,7 +20,29 @@ class Expenses extends Component {
     description: "",
     expenseDate: new Date(),
     location: "",
-    category: { id: '1',name:'test1'},
+    category: { id: "1", name: "test1" },
+  };
+
+  errorState = {
+    titleError: "",
+  };
+
+
+  validate = () => {
+    let titleError = "";
+
+    if (!(this.state.item.description)) {
+      titleError = "title field can't be empty.";
+    } else if (this.state.item.description.length < 3) {
+      titleError = "invalid title";
+    }
+
+    if (titleError) {
+      this.setState({ titleError });
+      return false;
+    }
+
+    return true;
   };
 
   constructor(props) {
@@ -45,17 +67,25 @@ class Expenses extends Component {
     const item = this.state.item;
     console.log(item);
 
-    await fetch(process.env.REACT_APP_HOST_URL + "/api/expenses", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("store"),
-      },
-      body: JSON.stringify(item),
-    });
-    this.props.history.push("/home");
-    this.props.history.push("/expenses");
+    const error = this.errorState;
+    const isValid = this.validate();
+    if (isValid) {
+      await fetch(process.env.REACT_APP_HOST_URL + "/api/expenses", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("store"),
+        },
+        body: JSON.stringify(item),
+      });
+      this.props.history.push("/home");
+      this.props.history.push("/expenses");
+
+    }else{
+      this.setState({error});
+    }
+
   }
 
   handleChange(event) {
@@ -66,23 +96,22 @@ class Expenses extends Component {
     item[name] = value;
     this.setState({ item });
 
-    console.log(item);
+    //console.log(item);
   }
 
   handleCatChange(category) {
-
     const target = category.target;
     const value = target.value;
 
     let idx = category.target.selectedIndex;
     let dataset = category.target.options[idx].text;
 
-    category = {...this.state.category}
+    category = { ...this.state.category };
     category.id = value;
     category.name = dataset;
 
-    let item = { ...this.state.item};
-    item.category = category
+    let item = { ...this.state.item };
+    item.category = category;
     this.setState({ item });
   }
 
@@ -137,11 +166,7 @@ class Expenses extends Component {
     if (isLoading) return <div>Loading....</div>;
 
     let optionList = Categories.map((category) => (
-      <option
-        name={category.id}
-        value={category.id}
-        key={category.id}
-      >
+      <option name={category.id} value={category.id} key={category.id}>
         {category.name}
       </option>
     ));
@@ -181,14 +206,23 @@ class Expenses extends Component {
                   name="description"
                   id="description"
                   onChange={this.handleChange}
+                  //helperText="*title should be minimum 3 charcater"
                 />
+                <div styl="fontSize: 12, display: block; float: left;">*title should be minimum 3 charcater</div>
+                <div style={{ fontSize: 12, color: "red" }}>
+                  {this.state.titleError}
+                </div>
               </FormGroup>
             </div>
             <div className="row">
               <FormGroup className="col-md-4 mb-3">
                 <Label for="category">Category</Label>
                 <div>
-                  <select className="col-md-6" category={this.state.category} onChange={this.handleCatChange}>
+                  <select
+                    className="col-md-6"
+                    category={this.state.category}
+                    onChange={this.handleCatChange}
+                  >
                     {optionList}
                   </select>
                 </div>
