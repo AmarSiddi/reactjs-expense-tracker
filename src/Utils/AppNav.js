@@ -11,7 +11,7 @@ class AppNav extends Component {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              {/* <Nav.Link href="/categories">Categories</Nav.Link> */}
+              <Nav.Link href="/categories">Categories</Nav.Link>
               <Nav.Link href="/expenses">Expenses</Nav.Link>
             </Nav>
             <Nav>
