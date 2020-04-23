@@ -10,28 +10,81 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import "./SignUp.css";
 
+const initState={
+  userName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  errorMessage: "",
+  nameError:"",
+  emailError:"",
+  passwordError:"",
+  confirmPasswordError:""
+ }
+
 class SignUp extends Component {
-  state = {
-    userName: "",
-    //lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    username: "",
-    errorMessage: "",
-  };
+
+  state = initState;
 
   handleChange = (event) => {
     event.preventDefault();
     this.setState({
       [event.target.name]: event.target.value,
     });
+    
+  };
+
+  validate = () => {
+    let nameError = "";
+    let emailError = "";
+    let passwordError = "";
+    let confirmPasswordError="";
+
+    if (!this.state.userName) {
+      nameError = "username can't be blank";
+    }else if(this.state.userName.length<5){
+      nameError = "invalid username";
+    }
+
+    if (!(this.state.email) ) {
+      emailError = "email can't be blank";
+    }else if(!(this.state.email.includes("@"))){
+      emailError = "invalid email";
+    }
+
+    if(!(this.state.password)){
+      passwordError="password can't be empty";
+    }else if(this.state.password.length<5){
+      passwordError="invalid password";
+    }
+
+    if(!(this.state.confirmPassword)){
+      confirmPasswordError="confirm password can't be empty";
+    }else if(this.state.confirmPassword.length<5){
+      confirmPasswordError="invalid password";
+    }
+
+    if(this.state.password !== this.state.confirmPassword){
+      this.setState({errorMessage : "password and confirm password doesn't match!!"})
+    }
+    
+    if (emailError||nameError||passwordError||confirmPasswordError) {
+      this.setState({ emailError,nameError,passwordError,confirmPasswordError});
+      return false;
+    }
+
+    return true;
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
 
     const { password, confirmPassword } = this.state;
+
+    const isValid = this.validate();
+    if (isValid) {
+      console.log(this.state);
+     
 
     if (password !== confirmPassword) {
       alert("Passwords don't match");
@@ -92,6 +145,9 @@ class SignUp extends Component {
           //console.error('There was an error!', error);
         });
     }
+     // clear form
+     this.setState({initState});
+  }
   };
 
   render() {
@@ -110,7 +166,7 @@ class SignUp extends Component {
               <Grid item xs={12}>
                 <TextField
                   autoComplete="Uname"
-                  name="UserName"
+                  name="userName"
                   variant="outlined"
                   required
                   fullWidth
@@ -118,8 +174,10 @@ class SignUp extends Component {
                   label="User Name"
                   autoFocus
                   onChange={this.handleChange}
+                  helperText="*username should be minimum 5 character"
                 />
               </Grid>
+              <div style={{fontSize:12, color:"red"}}>{this.state.nameError}</div>
               {/* <Grid item xs={12} sm={6}>
                 <TextField
                   variant="outlined"
@@ -142,8 +200,10 @@ class SignUp extends Component {
                   name="email"
                   autoComplete="email"
                   onChange={this.handleChange}
+
                 />
               </Grid>
+              <div style={{fontSize:12, color:"red"}}>{this.state.emailError}</div>
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
@@ -155,8 +215,10 @@ class SignUp extends Component {
                   id="password"
                   autoComplete="current-password"
                   onChange={this.handleChange}
+                  helperText="*password should be minimum 5 character long"
                 />
               </Grid>
+              <div style={{fontSize:12, color:"red"}}>{this.state.passwordError}</div>
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
@@ -170,6 +232,7 @@ class SignUp extends Component {
                   onChange={this.handleChange}
                 />
               </Grid>
+              <div style={{fontSize:12, color:"red"}}>{this.state.confirmPasswordError}</div>
             </Grid>
             <Button
               type="submit"
@@ -188,7 +251,7 @@ class SignUp extends Component {
               </Grid>
             </Grid>
           </form>
-          <h4 className="errorMessage">{this.state.errorMessage}</h4>
+          <h4 style={{color:"red"}}>{this.state.errorMessage}</h4>
         </div>
       </Container>
     );
