@@ -1,3 +1,4 @@
 /*    /index.html   200
-/signup /signin 
-/home /expenses /categories  302
+/signup /signin
+
+/signin /home
