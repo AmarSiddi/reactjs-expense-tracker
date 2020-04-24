@@ -122,9 +122,6 @@ class SignIn extends Component {
         //console.error('There was an error!', error);
       });
 
-    // }else{
-    //   alert("WHAATTTTTTTTT")
-    // }
   };
 
   render() {

@@ -22,14 +22,10 @@ export class App extends Component {
           <Route path="/" exact={true} component={SignIn}/>
           <Route path="/signin" exact={true} component={SignIn}/>
           <Route path="/signup" exact={true} component={SignUp}/>
-          {/* <Route path="/JoinForm" exact={true} component={JoinForm}/> */}
           <Route path="/sigout" exact={true} component={SignOut}/>
-
-          <Route path="/expenses" exact={true} component={Expenses}/>
-
           <ProtectedRoute exact={true} path="/home" component={Home}/> 
           <ProtectedRoute exact={true} path="/categories" component={Category}/>
-          {/* <ProtectedRoute exact={true} path="/expenses" component={Expenses}/> */}
+          <ProtectedRoute exact={true} path="/expenses" component={Expenses}/>
           <Route path="*" component={() => "404 NOT FOUND"} />
         </Switch>
       </Router>
